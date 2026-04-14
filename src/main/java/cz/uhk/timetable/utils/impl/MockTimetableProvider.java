@@ -8,7 +8,7 @@ import java.time.LocalTime;
 import java.util.List;
 
 /**
- * falesna trida provider se vzorovymi daty
+ * falesna trida provider se vzorovymi daty pro testovani
  */
 
 public class MockTimetableProvider implements TimetableProvider {
@@ -21,6 +21,8 @@ public class MockTimetableProvider implements TimetableProvider {
                 new Activity("PRO1", "Programovani1", "Utery", LocalTime.of(12,25), LocalTime.of(13,55), "Kozel"),
                 new Activity("PRO1", "Programovani1", "Utery", LocalTime.of(12,25), LocalTime.of(13,55), "Kozel")
         );
-        return null;
+
+        tt.setActivities(activities);
+        return tt;
     }
 }
