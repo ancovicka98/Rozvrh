@@ -1,16 +1,20 @@
 package cz.uhk.timetable.gui;
 
 import cz.uhk.timetable.model.LocationTimetable;
+import cz.uhk.timetable.utils.StagTimeAdapter;
 import cz.uhk.timetable.utils.TimetableProvider;
 import cz.uhk.timetable.utils.impl.MockTimetableProvider;
+import cz.uhk.timetable.utils.impl.StagTimetableProvider;
 
 import javax.swing.*;
 import javax.swing.table.AbstractTableModel;
 import java.awt.*;
+import java.util.List;
+import java.util.Locale;
 
 public class TimetableFrame extends JFrame {
     private LocationTimetable timetable;
-    private TimetableProvider provider = new MockTimetableProvider();
+    private TimetableProvider provider = new StagTimetableProvider();
     private JTable tabTimetable;
 
     public TimetableFrame() {
@@ -27,10 +31,16 @@ public class TimetableFrame extends JFrame {
 
         tabTimetable = new JTable(new TimetableModel());
 
+        tabTimetable.setAutoCreateRowSorter(true);
+
         add(new JScrollPane(tabTimetable), BorderLayout.CENTER);
 
         pack();
+
     }
+
+
+    
 
     class TimetableModel extends AbstractTableModel { //vnitrni trida
 
