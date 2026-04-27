@@ -1,21 +1,22 @@
 package cz.uhk.timetable.gui;
 
 import cz.uhk.timetable.model.LocationTimetable;
-import cz.uhk.timetable.utils.StagTimeAdapter;
 import cz.uhk.timetable.utils.TimetableProvider;
-import cz.uhk.timetable.utils.impl.MockTimetableProvider;
 import cz.uhk.timetable.utils.impl.StagTimetableProvider;
 
 import javax.swing.*;
 import javax.swing.table.AbstractTableModel;
 import java.awt.*;
-import java.util.List;
-import java.util.Locale;
 
 public class TimetableFrame extends JFrame {
     private LocationTimetable timetable;
     private TimetableProvider provider = new StagTimetableProvider();
     private JTable tabTimetable;
+
+    private JComboBox<String> cbBuilding;
+    private JComboBox<String> cbRoom;
+    private JButton btnLoad;
+    private JButton btnShowGrid;
 
     public TimetableFrame() {
         super("FIM Rozvrhy");
@@ -23,27 +24,56 @@ public class TimetableFrame extends JFrame {
         setDefaultCloseOperation(EXIT_ON_CLOSE);
 
         initGui();
+
+
     }
 
     private void initGui() { //tabulka
 
-        timetable = provider.read("J", "J22");
+        cbBuilding = new JComboBox<>(new String[]{"J", "H", "V", "A", "S"});
+        cbRoom = new JComboBox<>(new String[]{"J22", "J23", "J24", "H01", "H02"});
+        cbRoom.setEditable(true);
 
-        tabTimetable = new JTable(new TimetableModel());
+        btnLoad    = new JButton("Načíst rozvrh");
+        btnShowGrid = new JButton("Zobrazit přehled");
+        btnShowGrid.setEnabled(false);
 
+        JPanel topPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        topPanel.add(new JLabel("Budova:"));
+        topPanel.add(cbBuilding);
+        topPanel.add(new JLabel("Místnost:"));
+        topPanel.add(cbRoom);
+        topPanel.add(btnLoad);
+
+        add(topPanel, BorderLayout.NORTH);
+
+        tabTimetable = new JTable();
         tabTimetable.setAutoCreateRowSorter(true);
-
         add(new JScrollPane(tabTimetable), BorderLayout.CENTER);
 
-        pack();
+        btnLoad.addActionListener(e -> loadData());
+        btnShowGrid.addActionListener(e ->
+                new TimetableGridFrame(timetable).setVisible(true)
+        );
+
+        setSize(1100, 400);
+        setLocationRelativeTo(null);
 
     }
 
+    private void loadData() {
+        String building = (String) cbBuilding.getSelectedItem();
+        String room     = (String) cbRoom.getSelectedItem();
 
-    
+        timetable = provider.read(building, room);
+
+        tabTimetable.setModel(new TimetableModel());
+        tabTimetable.setAutoCreateRowSorter(true);
+    }
+
+
 
     class TimetableModel extends AbstractTableModel { //vnitrni trida
-
 
         @Override //getter pro pojmenovani kolonek
         public String getColumnName(int column) {
@@ -56,7 +86,10 @@ public class TimetableFrame extends JFrame {
                 case 5: return "Učitel";
             }
             return "";
+
         }
+
+
 
         @Override
         public int getRowCount() {
