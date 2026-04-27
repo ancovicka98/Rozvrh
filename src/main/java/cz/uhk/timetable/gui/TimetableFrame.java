@@ -38,12 +38,20 @@ public class TimetableFrame extends JFrame {
         btnShowGrid = new JButton("Zobrazit přehled");
         btnShowGrid.setEnabled(false);
 
-        JPanel topPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        topPanel.add(new JLabel("Budova:"));
-        topPanel.add(cbBuilding);
-        topPanel.add(new JLabel("Místnost:"));
-        topPanel.add(cbRoom);
-        topPanel.add(btnLoad);
+        JPanel topPanel = new JPanel(new GridLayout(2, 1));
+
+        JPanel row1 = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        row1.add(new JLabel("Budova:"));
+        row1.add(cbBuilding);
+        row1.add(new JLabel("Místnost:"));
+        row1.add(cbRoom);
+        row1.add(btnLoad);
+
+        JPanel row2 = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+        row2.add(btnShowGrid);
+
+        topPanel.add(row1);
+        topPanel.add(row2);
 
         add(topPanel, BorderLayout.NORTH);
 
@@ -69,6 +77,7 @@ public class TimetableFrame extends JFrame {
 
         tabTimetable.setModel(new TimetableModel());
         tabTimetable.setAutoCreateRowSorter(true);
+        btnShowGrid.setEnabled(true);
     }
 
 
