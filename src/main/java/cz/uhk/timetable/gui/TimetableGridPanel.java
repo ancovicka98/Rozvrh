@@ -14,10 +14,10 @@ public class TimetableGridPanel extends JPanel {
     private static final LocalTime START = LocalTime.of(7, 0);
     private static final LocalTime END   = LocalTime.of(21, 0);
 
-    private static final int HEADER_WIDTH  = 80;  // šířka sloupce s dny
-    private static final int HEADER_HEIGHT = 30;  // výška řádku s časem
-    private static final int ROW_HEIGHT    = 60;  // výška jednoho dne
-    private static final int PIXELS_PER_MINUTE = 3; // kolik px = 1 minuta
+    private static final int HEADER_WIDTH  = 80;  
+    private static final int HEADER_HEIGHT = 30;  
+    private static final int ROW_HEIGHT    = 60;  
+    private static final int PIXELS_PER_MINUTE = 3; 
 
     private final LocationTimetable timetable;
 
@@ -44,7 +44,7 @@ public class TimetableGridPanel extends JPanel {
     private void drawGrid(Graphics2D g) {
         int totalMinutes = (int) java.time.Duration.between(START, END).toMinutes();
 
-        // --- Časová osa nahoře (každá hodina) ---
+        
         g.setColor(Color.DARK_GRAY);
         g.setFont(new Font("SansSerif", Font.PLAIN, 10));
         for (int min = 0; min <= totalMinutes; min += 60) {
@@ -56,7 +56,7 @@ public class TimetableGridPanel extends JPanel {
             g.setColor(Color.DARK_GRAY);
         }
 
-        // --- Řádky dnů ---
+        
         for (int i = 0; i < DAYS.length; i++) {
             int y = HEADER_HEIGHT + i * ROW_HEIGHT;
             // název dne
@@ -70,7 +70,7 @@ public class TimetableGridPanel extends JPanel {
             g.drawLine(0, y, getWidth(), y);
         }
 
-        // spodní čára
+        
         g.drawLine(0, HEADER_HEIGHT + DAYS.length * ROW_HEIGHT,
                 getWidth(), HEADER_HEIGHT + DAYS.length * ROW_HEIGHT);
     }
@@ -79,11 +79,11 @@ public class TimetableGridPanel extends JPanel {
         List<Activity> activities = timetable.getActivities();
 
         Color[] COLORS = {
-                new Color(100, 149, 237),  // modrá
-                new Color(144, 238, 144),  // zelená
-                new Color(255, 179, 71),   // oranžová
-                new Color(221, 160, 221),  // fialová
-                new Color(255, 105, 97),   // červená
+                new Color(100, 149, 237),  
+                new Color(144, 238, 144),  
+                new Color(255, 179, 71),   
+                new Color(221, 160, 221),  
+                new Color(255, 105, 97),   
         };
         int colorIdx = 0;
 
@@ -103,7 +103,7 @@ public class TimetableGridPanel extends JPanel {
             int w = (endMin - startMin) * PIXELS_PER_MINUTE;
             int h = ROW_HEIGHT - 8;
 
-            // blok aktivity
+            
             Color c = COLORS[colorIdx % COLORS.length];
             colorIdx++;
             g.setColor(c);
@@ -111,7 +111,7 @@ public class TimetableGridPanel extends JPanel {
             g.setColor(c.darker());
             g.drawRoundRect(x, y, w, h, 8, 8);
 
-            // text uvnitř bloku
+            
             g.setColor(Color.WHITE);
             g.setFont(new Font("SansSerif", Font.BOLD, 11));
             drawClippedString(g, act.getCode(), x + 4, y + 16, w - 8);
@@ -120,7 +120,7 @@ public class TimetableGridPanel extends JPanel {
         }
     }
 
-    /** Ořízne text pokud se nevejde do šířky w */
+    
     private void drawClippedString(Graphics2D g, String text, int x, int y, int maxWidth) {
         if (text == null) return;
         FontMetrics fm = g.getFontMetrics();
